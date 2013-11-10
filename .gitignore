@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/PC.PowerBuddy/bin/Release
+/PC.PowerBuddy/obj/Release
+/PC.PowerBuddy/bin/Debug
+*.user

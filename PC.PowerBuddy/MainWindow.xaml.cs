@@ -132,10 +132,6 @@ namespace PC.PowerBuddy
 
 		private void CenterNearMouse()
 		{
-			SW.Point centerScreen = new SW.Point(
-							SWF.SystemInformation.VirtualScreen.Width / 2,
-							SWF.SystemInformation.VirtualScreen.Height / 2);
-
 			var mousePosition =
 				new SW.Point(
 					SWF.Control.MousePosition.X,
