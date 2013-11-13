@@ -20,6 +20,7 @@ using PC.PowerBuddy.Adapters;
 using PC.PowerBuddy.ViewModels;
 using System.ComponentModel;
 using System.Threading;
+using System.Reflection;
 
 
 namespace PC.PowerBuddy
@@ -41,7 +42,7 @@ namespace PC.PowerBuddy
 		private void SetupTrayIcon()
 		{
 			this.trayIcon = new SWF.NotifyIcon();
-			this.trayIcon.Icon = new SD.Icon("icon.ico");
+			this.trayIcon.Icon = SD.Icon.ExtractAssociatedIcon(Assembly.GetEntryAssembly().ManifestModule.Name);
 			this.trayIcon.Visible = true;
 			this.trayIcon.MouseDown += (sender, args) =>
 			{
