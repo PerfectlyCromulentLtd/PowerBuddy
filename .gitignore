@@ -6,4 +6,5 @@
 /PC.PowerBuddy/obj/Release
 /PC.PowerBuddy/bin/Debug
 *.user
+*.suo
 /PC.PowerBuddy/obj/Debug

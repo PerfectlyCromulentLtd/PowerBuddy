@@ -1,27 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using SD = System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SW = System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using SWF = System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Management;
-using PC.PowerBuddy.Entities;
-using PC.PowerBuddy.Adapters;
+﻿using PC.PowerBuddy.Interop;
 using PC.PowerBuddy.ViewModels;
-using System.ComponentModel;
-using System.Threading;
+using System;
 using System.Reflection;
-
+using System.Windows.Interop;
+using SD = System.Drawing;
+using SW = System.Windows;
+using SWF = System.Windows.Forms;
 
 namespace PC.PowerBuddy
 {
@@ -65,7 +49,7 @@ namespace PC.PowerBuddy
 			{
 				this.SkipToHidden();
 				this.CenterNearMouse();
-				this.viewModel.Update();
+				this.viewModel.UpdatePowerPlans();
 				this.Reveal();
 				this.Activate();
 			}
@@ -201,9 +185,21 @@ namespace PC.PowerBuddy
 
 		private void window_Loaded(object sender, SW.RoutedEventArgs e)
 		{
+			this.HideFromAltTab();
+
 			this.viewModel = (MainViewModel)this.DataContext;
-			this.viewModel.Update();
+			this.viewModel.UpdatePowerPlans();
 			this.SkipToHidden();
+		}
+
+		private void HideFromAltTab()
+		{
+			WindowInteropHelper wndHelper = new WindowInteropHelper(this);
+
+			int exStyle = (int)Win32Interop.GetWindowLong(wndHelper.Handle, (int)Win32Interop.GetWindowLongFields.GWL_EXSTYLE);
+
+			exStyle |= (int)Win32Interop.ExtendedWindowStyles.WS_EX_TOOLWINDOW;
+			Win32Interop.SetWindowLong(wndHelper.Handle, (int)Win32Interop.GetWindowLongFields.GWL_EXSTYLE, (IntPtr)exStyle);
 		}
 
 		public double AdjustedWidth

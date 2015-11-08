@@ -21,7 +21,7 @@ namespace PC.PowerBuddy.ViewModels
 
 			if (base.IsInDesigner)
 			{
-				this.Update();
+				this.UpdatePowerPlans();
 			}
 		}
 
@@ -38,7 +38,7 @@ namespace PC.PowerBuddy.ViewModels
 			}
 		}
 
-		internal void Update()
+		internal void UpdatePowerPlans()
 		{
 			this.PowerPlans = new ObservableCollection<PowerPlanViewModel>(this.querier.GetPowerPlans().Select(item => new PowerPlanViewModel(item)));
 		}

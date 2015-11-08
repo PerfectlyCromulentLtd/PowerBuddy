@@ -1,13 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PC.PowerBuddy", "PC.PowerBuddy\PC.PowerBuddy.csproj", "{43A8EC1A-FC51-4653-A4A3-06E97BB5698C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installer", "Installer", "{1EEEEA10-F4D1-4458-B00A-203007A4F03C}"
 	ProjectSection(SolutionItems) = preProject
 		Installer\PowerBuddy.nsi = Installer\PowerBuddy.nsi
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Git", "Git", "{30A621D4-2003-4CD5-AE28-577B531886A6}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 	EndProjectSection
 EndProject
 Global
