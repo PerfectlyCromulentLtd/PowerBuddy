@@ -81,15 +81,21 @@ SectionEnd
 ; Optional section (can be disabled by the user)
 Section "Start Menu Shortcuts"
 
-  CreateDirectory "$SMPROGRAMS\${ProductName}"
-  CreateShortCut "$SMPROGRAMS\${ProductName}\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
-  CreateShortCut "$SMPROGRAMS\${ProductName}\${ProductName}.lnk" "$INSTDIR\${BinaryFileName}" "" "" 0
+	CreateDirectory "$SMPROGRAMS\${ProductName}"
+	CreateShortCut "$SMPROGRAMS\${ProductName}\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
+	CreateShortCut "$SMPROGRAMS\${ProductName}\${ProductName}.lnk" "$INSTDIR\${BinaryFileName}" "" "" 0
   
 SectionEnd
 
 Section "Desktop Shortcuts"
 
 	CreateShortCut "$DESKTOP\${ProductName}.lnk" "$INSTDIR\${BinaryFileName}" "" "" 0
+
+SectionEnd
+
+Section "Start Automatically at Windows Startup"
+
+	CreateShortCut "$SMSTARTUP\${ProductName}.lnk" "$INSTDIR\${BinaryFileName}" "" "" 0
 
 SectionEnd
 

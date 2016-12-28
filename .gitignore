@@ -8,3 +8,4 @@
 *.user
 *.suo
 /PC.PowerBuddy/obj/Debug
+/.vs
