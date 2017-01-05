@@ -17,8 +17,8 @@
 	SizeToContent="WidthAndHeight"
 	ShowActivated="False"
 	
-	Deactivated="window_Deactivated"
-	Loaded="window_Loaded"
+	Deactivated="Window_Deactivated"
+	Loaded="Window_Loaded"
 	
 	DataContext="{StaticResource ViewModel}"
 	>

@@ -178,12 +178,12 @@ namespace PC.PowerBuddy
 			}
 		}
 
-		private void window_Deactivated(object sender, EventArgs e)
+		private void Window_Deactivated(object sender, EventArgs e)
 		{
 			this.TransitionToHidden();
 		}
 
-		private void window_Loaded(object sender, SW.RoutedEventArgs e)
+		private void Window_Loaded(object sender, SW.RoutedEventArgs e)
 		{
 			this.HideFromAltTab();
 
