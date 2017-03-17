@@ -15,6 +15,8 @@ namespace PC.PowerBuddy.ViewModels
 		private PowerPlanQuerier querier;
 		private ObservableCollection<PowerPlanViewModel> powerPlans;
 
+		public Action<PowerPlanViewModel> CurrentPlanChanged;
+
 		public MainViewModel()
 		{
 			this.querier = new PowerPlanQuerier();
@@ -40,7 +42,21 @@ namespace PC.PowerBuddy.ViewModels
 
 		internal void UpdatePowerPlans()
 		{
-			this.PowerPlans = new ObservableCollection<PowerPlanViewModel>(this.querier.GetPowerPlans().Select(item => new PowerPlanViewModel(item)));
+			this.PowerPlans = new ObservableCollection<PowerPlanViewModel>(this.querier.GetPowerPlans().Select(item =>
+			{
+				PowerPlanViewModel p = new PowerPlanViewModel(item);
+				p.PropertyChanged += (sender, args) =>
+				{
+					PowerPlanViewModel typedSender = (PowerPlanViewModel) sender;
+					if (args.PropertyName == "IsActive" && typedSender.IsActive)
+					{
+						this.CurrentPlanChanged(typedSender);
+					}
+				};
+				return p;
+			}));
+
+			this.CurrentPlanChanged(PowerPlans.Single(x => x.IsActive));
 		}
 	}
 }
