@@ -188,6 +188,10 @@ namespace PC.PowerBuddy
 			this.HideFromAltTab();
 
 			this.viewModel = (MainViewModel)this.DataContext;
+			this.viewModel.CurrentPlanChanged = (plan) =>
+			{
+				this.trayIcon.Text = "Current plan: " + plan.Name;
+			};
 			this.viewModel.UpdatePowerPlans();
 			this.SkipToHidden();
 		}
