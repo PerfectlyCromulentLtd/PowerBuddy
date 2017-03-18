@@ -1,0 +1,33 @@
+﻿<UserControl 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	x:Class="PC.PowerBuddy.Views.MainView"
+	mc:Ignorable="d" 
+	>
+
+    <StackPanel Orientation="Vertical" Margin="12 0">
+        <TextBlock Text="Select a power plan:">
+            <TextBlock.Foreground>
+                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.GrayTextColorKey}}"/>
+            </TextBlock.Foreground>
+        </TextBlock>
+        <ItemsControl
+		    ItemsSource="{Binding PowerPlans}"
+		    HorizontalContentAlignment="Stretch"
+		    ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <RadioButton 
+                        GroupName="PowerPlans"
+						VerticalContentAlignment="Center"
+						IsChecked="{Binding IsActive}"
+						Margin="3">
+                        <TextBlock Text="{Binding Name}" ToolTip="{Binding Description}" />
+                    </RadioButton>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </StackPanel>
+</UserControl>

@@ -1,23 +1,18 @@
-﻿using Microsoft.Practices.Prism.ViewModel;
-using PC.PowerBuddy.Entities;
-using PC.PowerBuddy.Models;
-using System;
-using System.Collections.Generic;
+﻿using PC.PowerBuddy.Models;
+using PC.PowerBuddy.Services;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PC.PowerBuddy.ViewModels
 {
 	public class MainViewModel : ViewModelBase
 	{
-		private PowerPlanQuerier querier;
+		private PowerPlanService powerPlanService;
 		private ObservableCollection<PowerPlanViewModel> powerPlans;
 
-		public MainViewModel()
+		public MainViewModel(PowerPlanService powerPlanService)
 		{
-			this.querier = new PowerPlanQuerier();
+			this.powerPlanService = powerPlanService;
 
 			if (base.IsInDesigner)
 			{
@@ -33,14 +28,13 @@ namespace PC.PowerBuddy.ViewModels
 			}
 			set
 			{
-				this.powerPlans = value;
-				base.RaisePropertyChanged(() => this.PowerPlans);
+				this.SetProperty(ref this.powerPlans, value);
 			}
 		}
 
 		internal void UpdatePowerPlans()
 		{
-			this.PowerPlans = new ObservableCollection<PowerPlanViewModel>(this.querier.GetPowerPlans().Select(item => new PowerPlanViewModel(item)));
+			this.PowerPlans = new ObservableCollection<PowerPlanViewModel>(this.powerPlanService.GetPowerPlans().Select(item => new PowerPlanViewModel(item)));
 		}
 	}
 }

@@ -1,14 +1,9 @@
-﻿using Microsoft.Practices.Prism.ViewModel;
-using PC.PowerBuddy.Entities;
+﻿using PC.PowerBuddy.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PC.PowerBuddy.ViewModels
 {
-	public class PowerPlanViewModel : NotificationObject
+	public class PowerPlanViewModel : ViewModelBase
 	{
 		private PowerPlan model;
 
@@ -42,7 +37,7 @@ namespace PC.PowerBuddy.ViewModels
 			set
 			{
 				this.model.IsActive = value;
-				base.RaisePropertyChanged(() => this.IsActive);
+				this.OnPropertyChanged();
 
 				if (this.model.IsActive)
 				{

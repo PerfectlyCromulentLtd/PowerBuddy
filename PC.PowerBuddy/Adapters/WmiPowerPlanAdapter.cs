@@ -1,16 +1,13 @@
-﻿using PC.PowerBuddy.Entities;
+﻿using PC.PowerBuddy.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PC.PowerBuddy.Adapters
 {
 	public class WmiPowerPlanAdapter
 	{
 		private ManagementObject wmiPowerPlan;
+
 		public WmiPowerPlanAdapter(ManagementObject wmiPowerPlan)
 		{
 			String pathClassName = wmiPowerPlan.ClassPath.ClassName;

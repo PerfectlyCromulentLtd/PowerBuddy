@@ -3,10 +3,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	x:Class="PC.PowerBuddy.MainWindow"
+    xmlns:views="clr-namespace:PC.PowerBuddy.Views"
+	xmlns:viewModels="clr-namespace:PC.PowerBuddy.ViewModels"
+    	x:Class="PC.PowerBuddy.MainWindow"
 	x:Name="window" 
 	mc:Ignorable="d" 
-    Title="MainWindow"
 
 	Topmost="True"
 	WindowStyle="None"
@@ -17,157 +18,136 @@
 	SizeToContent="WidthAndHeight"
 	ShowActivated="False"
 	
-	Deactivated="Window_Deactivated"
+    Deactivated="Window_Deactivated"
 	Loaded="Window_Loaded"
-	
-	DataContext="{StaticResource ViewModel}"
+    
+	d:DataContext="{d:DesignInstance viewModels:MainViewModel, IsDesignTimeCreatable=True}"
 	>
 
-	<Grid Margin="12"
+    <Grid Margin="12"
 		  Background="White"
 		  RenderTransformOrigin="0.5, 0.5"
 		  x:Name="grid"
 		  >
-		<VisualStateManager.VisualStateGroups>
-			<VisualStateGroup x:Name="VisualStateGroup">
-				<VisualStateGroup.Transitions>
-					<VisualTransition From="hiddenAtBottom" GeneratedDuration="0:0:0.3" To="visibleState">
-						<VisualTransition.GeneratedEasingFunction>
-							<BackEase EasingMode="EaseOut" Amplitude="0.4"/>
-						</VisualTransition.GeneratedEasingFunction>
-					</VisualTransition>
-					<VisualTransition From="hiddenAtTop" GeneratedDuration="0:0:0.3" To="visibleState">
-						<VisualTransition.GeneratedEasingFunction>
-							<BackEase EasingMode="EaseOut" Amplitude="0.4"/>
-						</VisualTransition.GeneratedEasingFunction>
-					</VisualTransition>
-					<VisualTransition From="hiddenAtRight" GeneratedDuration="0:0:0.3" To="visibleState">
-						<VisualTransition.GeneratedEasingFunction>
-							<BackEase EasingMode="EaseOut" Amplitude="0.4"/>
-						</VisualTransition.GeneratedEasingFunction>
-					</VisualTransition>
-					<VisualTransition From="hiddenAtLeft" GeneratedDuration="0:0:0.3" To="visibleState">
-						<VisualTransition.GeneratedEasingFunction>
-							<BackEase EasingMode="EaseOut" Amplitude="0.4"/>
-						</VisualTransition.GeneratedEasingFunction>
-					</VisualTransition>
-					<VisualTransition From="visibleState" GeneratedDuration="0:0:0.2"/>
-				</VisualStateGroup.Transitions>
-				<VisualState x:Name="hiddenAtTop">
-					<Storyboard>
-						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="window">
-							<EasingDoubleKeyFrame KeyTime="0" Value="1"/>
-						</DoubleAnimationUsingKeyFrames>
-						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="grid">
-							<EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
-						</DoubleAnimationUsingKeyFrames>
-						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="grid">
-							<EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
-						</DoubleAnimationUsingKeyFrames>
-						<PointAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransformOrigin)" Storyboard.TargetName="grid">
-							<EasingPointKeyFrame KeyTime="0" Value="0.5,-0.5"/>
-						</PointAnimationUsingKeyFrames>
-						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="grid">
-							<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-						</DoubleAnimationUsingKeyFrames>
-					</Storyboard>
-				</VisualState>
-				<VisualState x:Name="hiddenAtRight">
-					<Storyboard>
-						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="window">
-							<EasingDoubleKeyFrame KeyTime="0" Value="1"/>
-						</DoubleAnimationUsingKeyFrames>
-						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="grid">
-							<EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
-						</DoubleAnimationUsingKeyFrames>
-						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="grid">
-							<EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
-						</DoubleAnimationUsingKeyFrames>
-						<PointAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransformOrigin)" Storyboard.TargetName="grid">
-							<EasingPointKeyFrame KeyTime="0" Value="1.5,0.5"/>
-						</PointAnimationUsingKeyFrames>
-						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="grid">
-							<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-						</DoubleAnimationUsingKeyFrames>
-					</Storyboard>
-				</VisualState>
-				<VisualState x:Name="hiddenAtBottom">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualStateGroup.Transitions>
+                    <VisualTransition From="hiddenAtBottom" GeneratedDuration="0:0:0.3" To="visibleState">
+                        <VisualTransition.GeneratedEasingFunction>
+                            <BackEase EasingMode="EaseOut" Amplitude="0.4"/>
+                        </VisualTransition.GeneratedEasingFunction>
+                    </VisualTransition>
+                    <VisualTransition From="hiddenAtTop" GeneratedDuration="0:0:0.3" To="visibleState">
+                        <VisualTransition.GeneratedEasingFunction>
+                            <BackEase EasingMode="EaseOut" Amplitude="0.4"/>
+                        </VisualTransition.GeneratedEasingFunction>
+                    </VisualTransition>
+                    <VisualTransition From="hiddenAtRight" GeneratedDuration="0:0:0.3" To="visibleState">
+                        <VisualTransition.GeneratedEasingFunction>
+                            <BackEase EasingMode="EaseOut" Amplitude="0.4"/>
+                        </VisualTransition.GeneratedEasingFunction>
+                    </VisualTransition>
+                    <VisualTransition From="hiddenAtLeft" GeneratedDuration="0:0:0.3" To="visibleState">
+                        <VisualTransition.GeneratedEasingFunction>
+                            <BackEase EasingMode="EaseOut" Amplitude="0.4"/>
+                        </VisualTransition.GeneratedEasingFunction>
+                    </VisualTransition>
+                    <VisualTransition From="visibleState" GeneratedDuration="0:0:0.2"/>
+                </VisualStateGroup.Transitions>
+                <VisualState x:Name="hiddenAtTop">
+                    <Storyboard>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="window">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="grid">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="grid">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
+                        </DoubleAnimationUsingKeyFrames>
+                        <PointAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransformOrigin)" Storyboard.TargetName="grid">
+                            <EasingPointKeyFrame KeyTime="0" Value="0.5,-0.5"/>
+                        </PointAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="grid">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="hiddenAtRight">
+                    <Storyboard>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="window">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="grid">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="grid">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
+                        </DoubleAnimationUsingKeyFrames>
+                        <PointAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransformOrigin)" Storyboard.TargetName="grid">
+                            <EasingPointKeyFrame KeyTime="0" Value="1.5,0.5"/>
+                        </PointAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="grid">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="hiddenAtBottom">
 
-					<Storyboard>
-						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="window">
-							<EasingDoubleKeyFrame KeyTime="0" Value="1"/>
-						</DoubleAnimationUsingKeyFrames>
-						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="grid">
-							<EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
-						</DoubleAnimationUsingKeyFrames>
-						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="grid">
-							<EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
-						</DoubleAnimationUsingKeyFrames>
-						<PointAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransformOrigin)" Storyboard.TargetName="grid">
-							<EasingPointKeyFrame KeyTime="0" Value="0.5,1.5"/>
-						</PointAnimationUsingKeyFrames>
-						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="grid">
-							<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-						</DoubleAnimationUsingKeyFrames>
-					</Storyboard>
+                    <Storyboard>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="window">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="grid">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="grid">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
+                        </DoubleAnimationUsingKeyFrames>
+                        <PointAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransformOrigin)" Storyboard.TargetName="grid">
+                            <EasingPointKeyFrame KeyTime="0" Value="0.5,1.5"/>
+                        </PointAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="grid">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
 
-				</VisualState>
-				<VisualState x:Name="hiddenAtLeft">
-					<Storyboard>
-						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="window">
-							<EasingDoubleKeyFrame KeyTime="0" Value="1"/>
-						</DoubleAnimationUsingKeyFrames>
-						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="grid">
-							<EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
-						</DoubleAnimationUsingKeyFrames>
-						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="grid">
-							<EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
-						</DoubleAnimationUsingKeyFrames>
-						<PointAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransformOrigin)" Storyboard.TargetName="grid">
-							<EasingPointKeyFrame KeyTime="0" Value="-0.5,0.5"/>
-						</PointAnimationUsingKeyFrames>
-						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="grid">
-							<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-						</DoubleAnimationUsingKeyFrames>
-					</Storyboard>
-				</VisualState>
-				<VisualState x:Name="visibleState"/>
-			</VisualStateGroup>
-		</VisualStateManager.VisualStateGroups>
-		<Grid.RenderTransform>
-			<TransformGroup>
-				<ScaleTransform/>
-				<SkewTransform/>
-				<RotateTransform/>
-				<TranslateTransform/>
-			</TransformGroup>
-		</Grid.RenderTransform>
-		<Border
+                </VisualState>
+                <VisualState x:Name="hiddenAtLeft">
+                    <Storyboard>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="window">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="grid">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="grid">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
+                        </DoubleAnimationUsingKeyFrames>
+                        <PointAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransformOrigin)" Storyboard.TargetName="grid">
+                            <EasingPointKeyFrame KeyTime="0" Value="-0.5,0.5"/>
+                        </PointAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="grid">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="visibleState"/>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Grid.RenderTransform>
+            <TransformGroup>
+                <ScaleTransform/>
+                <SkewTransform/>
+                <RotateTransform/>
+                <TranslateTransform/>
+            </TransformGroup>
+        </Grid.RenderTransform>
+
+        <Border
 			BorderBrush="Blue"
 			BorderThickness="1">
-
-			<StackPanel Orientation="Vertical" Margin="12 0">
-				<TextBlock Text="Select a power plan:">
-					<TextBlock.Foreground>
-						<SolidColorBrush Color="{DynamicResource {x:Static SystemColors.GrayTextColorKey}}"/>
-					</TextBlock.Foreground>
-				</TextBlock>
-				<ItemsControl
-						ItemsSource="{Binding PowerPlans}"
-						HorizontalContentAlignment="Stretch"
-						ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<RadioButton GroupName="PowerPlans"
-										 VerticalContentAlignment="Center"
-										 IsChecked="{Binding IsActive}"
-										 Margin="3">
-								<TextBlock Text="{Binding Name}" ToolTip="{Binding Description}" />
-							</RadioButton>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
-			</StackPanel>
-		</Border>
-	</Grid>
+            <views:MainView/>
+        </Border>
+    </Grid>
 </Window>

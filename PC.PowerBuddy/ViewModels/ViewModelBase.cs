@@ -1,14 +1,10 @@
-﻿using Microsoft.Practices.Prism.ViewModel;
-using System;
-using System.Collections.Generic;
+﻿using Prism.Mvvm;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Windows;
 
 namespace PC.PowerBuddy.ViewModels
 {
-	public abstract class ViewModelBase : NotificationObject
+	public abstract class ViewModelBase : BindableBase
 	{
 		public bool IsInDesigner
 		{

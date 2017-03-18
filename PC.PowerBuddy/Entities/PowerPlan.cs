@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Management;
 
-namespace PC.PowerBuddy.Entities
+namespace PC.PowerBuddy.Models
 {
 	public class PowerPlan
 	{
@@ -38,7 +35,7 @@ namespace PC.PowerBuddy.Entities
 			set;
 		}
 
-		public System.Management.ManagementObject WmiPowerPlan
+		public ManagementObject WmiPowerPlan
 		{
 			get;
 			set;

@@ -1,25 +1,24 @@
-﻿using PC.PowerBuddy.Interop;
-using PC.PowerBuddy.ViewModels;
+﻿using PC.PowerBuddy.ViewModels;
 using System;
 using System.Reflection;
-using System.Windows.Interop;
+using System.Windows;
 using SD = System.Drawing;
-using SW = System.Windows;
 using SWF = System.Windows.Forms;
 
 namespace PC.PowerBuddy
 {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
-	public partial class MainWindow : SW.Window
+	public partial class MainWindow : Window
 	{
 		private MainViewModel viewModel;
 		private SWF.NotifyIcon trayIcon;
 
-		public MainWindow()
+		public MainWindow(MainViewModel viewModel)
 		{
 			InitializeComponent();
+
+			this.viewModel = viewModel;
+			this.DataContext = this.viewModel;
+
 			this.SetupTrayIcon();
 		}
 
@@ -59,13 +58,13 @@ namespace PC.PowerBuddy
 			}
 		}
 
-		private SW.VisualState GetHiddenState()
+		private VisualState GetHiddenState()
 		{
-			SW.VisualState result = this.hiddenAtBottom;
+			VisualState result = this.hiddenAtBottom;
 
 			var workingArea = SWF.Screen.PrimaryScreen.WorkingArea;
 			var mousePosition =
-				new SW.Point(
+				new Point(
 					SWF.Control.MousePosition.X,
 					SWF.Control.MousePosition.Y);
 
@@ -101,7 +100,7 @@ namespace PC.PowerBuddy
 		{
 			this.IsHitTestVisible = false;
 			var appropriateHiddenState = this.GetHiddenState();
-			SW.VisualStateManager.GoToElementState(this.grid, appropriateHiddenState.Name, useTransition);
+			VisualStateManager.GoToElementState(this.grid, appropriateHiddenState.Name, useTransition);
 		}
 
 		private void TransitionToHidden()
@@ -112,13 +111,13 @@ namespace PC.PowerBuddy
 		private void Reveal()
 		{
 			this.IsHitTestVisible = true;
-			SW.VisualStateManager.GoToElementState(this.grid, this.visibleState.Name, true);
+			VisualStateManager.GoToElementState(this.grid, this.visibleState.Name, true);
 		}
 
 		private void CenterNearMouse()
 		{
 			var mousePosition =
-				new SW.Point(
+				new Point(
 					SWF.Control.MousePosition.X,
 					SWF.Control.MousePosition.Y);
 
@@ -166,7 +165,7 @@ namespace PC.PowerBuddy
 		{
 			get
 			{
-				return SW.PresentationSource.FromVisual(this).CompositionTarget.TransformFromDevice.M11;
+				return PresentationSource.FromVisual(this).CompositionTarget.TransformFromDevice.M11;
 			}
 		}
 
@@ -174,7 +173,7 @@ namespace PC.PowerBuddy
 		{
 			get
 			{
-				return SW.PresentationSource.FromVisual(this).CompositionTarget.TransformFromDevice.M22;
+				return PresentationSource.FromVisual(this).CompositionTarget.TransformFromDevice.M22;
 			}
 		}
 
@@ -183,23 +182,9 @@ namespace PC.PowerBuddy
 			this.TransitionToHidden();
 		}
 
-		private void Window_Loaded(object sender, SW.RoutedEventArgs e)
+		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.HideFromAltTab();
-
-			this.viewModel = (MainViewModel)this.DataContext;
-			this.viewModel.UpdatePowerPlans();
 			this.SkipToHidden();
-		}
-
-		private void HideFromAltTab()
-		{
-			WindowInteropHelper wndHelper = new WindowInteropHelper(this);
-
-			int exStyle = (int)Win32Interop.GetWindowLong(wndHelper.Handle, (int)Win32Interop.GetWindowLongFields.GWL_EXSTYLE);
-
-			exStyle |= (int)Win32Interop.ExtendedWindowStyles.WS_EX_TOOLWINDOW;
-			Win32Interop.SetWindowLong(wndHelper.Handle, (int)Win32Interop.GetWindowLongFields.GWL_EXSTYLE, (IntPtr)exStyle);
 		}
 
 		public double AdjustedWidth
