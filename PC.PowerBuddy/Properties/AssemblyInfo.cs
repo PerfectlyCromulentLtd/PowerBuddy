@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("PC.PowerBuddy")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PC.PowerBuddy")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
+[assembly: AssemblyCompany("Perfectly Cromulent")]
+[assembly: AssemblyProduct("Power Buddy")]
+[assembly: AssemblyCopyright("Copyright © Perfectly Cromulent Ltd 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

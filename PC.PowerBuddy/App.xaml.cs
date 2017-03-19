@@ -19,15 +19,23 @@ namespace PC.PowerBuddy
 			var notifyIconService = new NotifyIconService();
 			var powerPlanService = new PowerPlanService();
 
+			this.MainWindow = new MainWindow(new MainViewModel(powerPlanService, notifyIconService), notifyIconService);
+			this.MainWindow.Show();
+
+			var editor = new IconEditorWindow(new IconEditorViewModel(notifyIconService, powerPlanService));
+			editor.Owner = this.MainWindow;
+
 			notifyIconService.IconEditorLaunchRequested += (s, e) =>
 			{
-				var editor = new IconEditorWindow(new IconEditorViewModel(notifyIconService, powerPlanService));
-				editor.Show();
+				if (!editor.IsVisible)
+				{
+					editor.Show();
+				}
+				else
+				{
+					editor.Activate();
+				}
 			};
-
-			this.MainWindow = new MainWindow(new MainViewModel(powerPlanService, notifyIconService), notifyIconService);
-
-			this.MainWindow.Show();
-        }
+		}
 	}
 }

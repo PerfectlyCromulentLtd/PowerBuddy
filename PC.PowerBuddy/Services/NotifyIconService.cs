@@ -18,6 +18,7 @@ namespace PC.PowerBuddy.Services
 		private readonly NotifyIcon notifyIcon;
 		private IDictionary<Guid, Icon> candidateIcons;
 		private Guid activePowerPlanId;
+		private DirectoryInfo iconFolder;
 
 		public NotifyIconService()
 		{
@@ -25,6 +26,7 @@ namespace PC.PowerBuddy.Services
 
 			this.defaultIcon = Icon.ExtractAssociatedIcon(Assembly.GetEntryAssembly().ManifestModule.Name);
 
+			this.SetIconFolder();
 			this.LoadIcons();
 
 			this.notifyIcon = new NotifyIcon();
@@ -33,10 +35,32 @@ namespace PC.PowerBuddy.Services
 			this.CloseRequested += (s, e) => this.notifyIcon.Visible = false;
 		}
 
+		private void SetIconFolder()
+		{
+			var appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+			var assembly = Assembly.GetEntryAssembly();
+			var companyAttribute =
+				(AssemblyCompanyAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyCompanyAttribute), false);
+			var productAttribute =
+				(AssemblyProductAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyProductAttribute), false);
+
+			this.iconFolder = 
+				new DirectoryInfo(
+					Path.Combine(
+						appDataFolder,
+						companyAttribute.Company.Replace(' ', '_'), 
+						productAttribute.Product, 
+						"Icons"));
+
+			this.iconFolder.Create();
+		}
+
 		private void LoadIcons()
 		{
+			this.iconFolder.Refresh();
+
 			this.candidateIcons =
-				new DirectoryInfo(".")
+				this.iconFolder
 					.GetFiles("*.ico")
 					.Select(item => new
 					{
@@ -105,7 +129,7 @@ namespace PC.PowerBuddy.Services
 
 		internal void StoreNewPowerPlanIcon(Guid powerPlanId, byte[] iconData)
 		{
-			File.WriteAllBytes($".\\{powerPlanId}.ico", iconData);
+			File.WriteAllBytes(Path.Combine(this.iconFolder.FullName, $@".\{powerPlanId}.ico"), iconData);
 			this.LoadIcons();
 			this.SetDisplayedIcon(this.activePowerPlanId, this.notifyIcon.Text); //HACK
 		}
