@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BluwolfIcons</name>
+    </assembly>
+    <members>
+        <member name="T:BluwolfIcons.BmpIconImage">
+            <summary>
+            A BMP (Bitmap) image inside an icon.
+            </summary>
+        </member>
+        <member name="P:BluwolfIcons.BmpIconImage.OriginalImage">
+            <summary>
+            The original image.
+            </summary>
+            <exception cref="T:System.ArgumentException">Thrown when an image too big is assigned.</exception>
+        </member>
+        <member name="P:BluwolfIcons.BmpIconImage.Width">
+            <summary>
+            This image's width.
+            </summary>
+        </member>
+        <member name="P:BluwolfIcons.BmpIconImage.Height">
+            <summary>
+            This image's height.
+            </summary>
+        </member>
+        <member name="P:BluwolfIcons.BmpIconImage.BitsPerPixel">
+            <summary>
+            This image's bits per pixel.
+            </summary>
+        </member>
+        <member name="P:BluwolfIcons.BmpIconImage.GenerateTransparencyMap">
+            <summary>
+            Whether a transparency map should be generated automatically for this image.
+            Set to <c>false</c> if the image already contains a transparency map. See remarks for more info.
+            </summary>
+            <remarks>
+            BMP images inside icons are stored with an extra transparency map above the actual image data.
+            That transparency map is a 1-bit per pixel AND mask that defines if a pixel is visible or not,
+            allowing for 1-bit transparency.
+            </remarks>
+            <exception cref="T:System.ArgumentException">Thrown when <see cref="P:BluwolfIcons.BmpIconImage.OriginalImage"/> is taller than 256 pixels and value is being set to <c>false</c>.</exception>
+        </member>
+        <member name="M:BluwolfIcons.BmpIconImage.#ctor(System.Windows.Media.Imaging.BitmapSource)">
+            <summary>
+            Creates a new BMP icon image, with <paramref name="image"/> as its original image, without a transparency map.
+            </summary>
+            <param name="image">The original image to use in this icon image.</param>
+        </member>
+        <member name="M:BluwolfIcons.BmpIconImage.#ctor(System.Windows.Media.Imaging.BitmapSource,System.Boolean)">
+            <summary>
+            Creates a new BMP icon image, with <paramref name="image"/> as its original image.
+            </summary>
+            <param name="image">The original image to use in this icon image.</param>
+            <param name="generateMap">Whether to generate the transparency map or not.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="image"/> is <c>null</c>.</exception>
+        </member>
+        <member name="M:BluwolfIcons.BmpIconImage.GetData">
+            <summary>
+            Generates the BMP icon image data for this image.
+            </summary>
+            <returns>The BMP icon image data for this image.</returns>
+        </member>
+        <member name="T:BluwolfIcons.Icon">
+            <summary>
+            Represents an icon image file.
+            </summary>
+        </member>
+        <member name="P:BluwolfIcons.Icon.Images">
+            <summary>
+            All the images contained in this icon.
+            </summary>
+        </member>
+        <member name="M:BluwolfIcons.Icon.Save(System.String)">
+            <summary>
+            Saves this icon to a specified file.
+            </summary>
+            <param name="fileName">The file to save this icon to.</param>
+        </member>
+        <member name="M:BluwolfIcons.Icon.Save(System.IO.Stream)">
+            <summary>
+            Saves this icon to a specified stream.
+            </summary>
+            <param name="stream">The stream to save this icon to.</param>
+        </member>
+        <member name="M:BluwolfIcons.Icon.Load(System.String)">
+            <summary>
+            Loads an icon from a specified file.
+            </summary>
+            <param name="fileName">The file to load the icon from.</param>
+            <returns>The loaded icon.</returns>
+        </member>
+        <member name="M:BluwolfIcons.Icon.Load(System.IO.Stream)">
+            <summary>
+            Loads an icon from a stream.
+            </summary>
+            <param name="stream">The stream to load the icon from.</param>
+            <returns>The loaded icon.</returns>
+        </member>
+        <member name="M:BluwolfIcons.Icon.Load(System.Windows.Media.Imaging.BitmapDecoder)">
+            <summary>
+            Loads an icon from a bitmap decoder.
+            </summary>
+            <param name="decoder">The decoder to use when loading the icon. Every unique Frame decoded will be recognized as one individual image.</param>
+            <returns>The loaded icon</returns>
+        </member>
+        <member name="T:BluwolfIcons.IIconImage">
+            <summary>
+            An image contained inside an icon.
+            </summary>
+        </member>
+        <member name="P:BluwolfIcons.IIconImage.Width">
+            <summary>
+            This image's width.
+            </summary>
+        </member>
+        <member name="P:BluwolfIcons.IIconImage.Height">
+            <summary>
+            This image's height.
+            </summary>
+        </member>
+        <member name="P:BluwolfIcons.IIconImage.BitsPerPixel">
+            <summary>
+            This image's bits per pixel.
+            </summary>
+        </member>
+        <member name="M:BluwolfIcons.IIconImage.GetData">
+            <summary>
+            Generates the icon image data for this image.
+            </summary>
+            <returns>The data representing this image in the .ico</returns>
+        </member>
+        <member name="T:BluwolfIcons.PngIconImage">
+            <summary>
+            A PNG (Portable Network Graphics) image inside an icon.
+            </summary>
+        </member>
+        <member name="P:BluwolfIcons.PngIconImage.OriginalImage">
+            <summary>
+            The original image.
+            </summary>
+            <exception cref="T:System.ArgumentException">Thrown when an image too big is assigned.</exception>
+        </member>
+        <member name="P:BluwolfIcons.PngIconImage.Width">
+            <summary>
+            This image's width.
+            </summary>
+        </member>
+        <member name="P:BluwolfIcons.PngIconImage.Height">
+            <summary>
+            This image's height.
+            </summary>
+        </member>
+        <member name="P:BluwolfIcons.PngIconImage.BitsPerPixel">
+            <summary>
+            This image's bits per pixel.
+            </summary>
+        </member>
+        <member name="M:BluwolfIcons.PngIconImage.#ctor(System.Windows.Media.Imaging.BitmapSource)">
+            <summary>
+            Creates a new PNG icon image, with <paramref name="image"/> as its original image.
+            </summary>
+            <param name="image">The original image to use in this icon image.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="image"/> is <c>null</c>.</exception>
+        </member>
+        <member name="M:BluwolfIcons.PngIconImage.GetData">
+            <summary>
+            Gets the PNG icon image data for this image.
+            </summary>
+            <returns>The PNG icon image data for this image.</returns>
+        </member>
+    </members>
+</doc>

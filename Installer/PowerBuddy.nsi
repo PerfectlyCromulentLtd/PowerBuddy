@@ -59,9 +59,7 @@ Section "${ProductName} (required)"
   SetOutPath $INSTDIR
   
   ; Put file there
-  File "..\${ProjectName}\bin\Release\${BinaryFileName}"
-  File "..\${ProjectName}\bin\Release\${BinaryFileName}.config"
-  File "..\${ProjectName}\bin\Release\Microsoft.Practices.Prism.dll"
+  File /r "..\${ProjectName}\bin\Release\*"
   
   ; Write the installation path into the registry
   WriteRegStr HKLM "Software\${CompanyName}\${CompactProductName}" "Install_Dir" "$INSTDIR"
@@ -109,17 +107,11 @@ Section "Uninstall"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${CompactProductName}"
   DeleteRegKey HKLM "Software\${CompanyName}\${CompactProductName}"
 
-  ; Remove files and uninstaller
-  Delete $INSTDIR\${BinaryFileName}
-  Delete $INSTDIR\${BinaryFileName}.config
-  Delete $INSTDIR\Microsoft.Practices.Prism.dll
-  Delete $INSTDIR\uninstall.exe
-
   ; Remove shortcuts, if any
   Delete "$SMPROGRAMS\${ProductName}\*.*"
 
   ; Remove directories used
   RMDir "$SMPROGRAMS\${ProductName}"
-  RMDir "$INSTDIR"
+  RMDir /r /REBOOTOK "$INSTDIR"
 
 SectionEnd

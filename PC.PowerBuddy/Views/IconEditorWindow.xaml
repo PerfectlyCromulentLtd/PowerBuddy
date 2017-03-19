@@ -1,0 +1,152 @@
+﻿<Window x:Class="PC.PowerBuddy.Views.IconEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:PC.PowerBuddy.Controls"
+        mc:Ignorable="d"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        WindowStartupLocation="CenterScreen"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize"
+        Title="Icon Editor"
+        >
+    <Grid Height="296">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="296"/>
+            <ColumnDefinition Width="296"/>
+        </Grid.ColumnDefinitions>
+        <Grid 
+            Grid.Column="0"
+            Margin="20">
+            <Grid.Resources>
+                <Style TargetType="controls:EditableIcon">
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                    <Setter Property="VerticalAlignment" Value="Top"/>
+                    <Setter Property="IconForeground" Value="{Binding SelectedPowerPlan.Foreground}"/>
+                    <Setter Property="IconBackground" Value="{Binding SelectedPowerPlan.Background}"/>
+                </Style>
+            </Grid.Resources>
+
+            <controls:EditableIcon x:Name="icon16" Height="16" />
+            <controls:EditableIcon x:Name="icon24" Height="24" />
+            <controls:EditableIcon x:Name="icon32" Height="32" />
+            <controls:EditableIcon x:Name="icon48" Height="48" />
+            <controls:EditableIcon x:Name="icon64" Height="64" />
+            <controls:EditableIcon x:Name="icon96" Height="96" />
+            <controls:EditableIcon x:Name="icon128" Height="128" />
+            <controls:EditableIcon x:Name="icon192" Height="192" />
+
+            <Rectangle Fill="Gray" Margin="-16"/>
+            <Rectangle Margin="-16">
+                <Rectangle.Resources>
+                    <SolidColorBrush x:Key="LightSquareColor" Color="#34FFFFFF" />
+                </Rectangle.Resources>
+                <Rectangle.Fill>
+                    <DrawingBrush Viewport="0,0,16,16" ViewportUnits="Absolute" Stretch="None" TileMode="Tile">
+                        <DrawingBrush.Drawing>
+                            <DrawingGroup>
+                                <GeometryDrawing Brush="{StaticResource LightSquareColor}">
+                                    <GeometryDrawing.Geometry>
+                                        <GeometryGroup>
+                                            <RectangleGeometry Rect="0,0,8,8"/>
+                                            <RectangleGeometry Rect="8,8,8,8"/>
+                                        </GeometryGroup>
+                                    </GeometryDrawing.Geometry>
+                                </GeometryDrawing>
+                            </DrawingGroup>
+                        </DrawingBrush.Drawing>
+                    </DrawingBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+
+            <controls:EditableIcon x:Name="icon256" Height="256" />
+        </Grid>
+        <Grid
+            Grid.Column="2"
+            Margin="8">
+            <Grid.Resources>
+                <Style TargetType="xctk:ColorPicker">
+                    <Setter Property="DisplayColorAndName" Value="True"/>
+                    <Setter Property="ColorMode" Value="ColorCanvas"/>
+                    <Setter Property="ShowAdvancedButton" Value="False"/>
+                </Style>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="6*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Label
+                Grid.Row="0"
+                Grid.Column="0" Grid.ColumnSpan="2"
+                Content="Power plan:"/>
+
+            <ComboBox
+                Grid.Row="1"
+                Grid.Column="0" Grid.ColumnSpan="2"
+                VerticalAlignment="Top"
+                DisplayMemberPath="Name"
+                ItemsSource="{Binding PowerPlans}"
+                SelectedItem="{Binding SelectedPowerPlan}"/>
+
+            <Label
+                Grid.Row="2"
+                Grid.Column="0"
+                Margin="9 0"
+                Content="Foreground:"/>
+            <Label
+                Grid.Row="2"
+                Grid.Column="1"
+                Margin="9 0"
+                Content="Background:"/>
+
+            <xctk:ColorPicker
+                Grid.Row="3"
+                Grid.Column="0"
+                Margin="9 0"
+                SelectedColor="{Binding SelectedPowerPlan.Foreground}"
+                />
+            <xctk:ColorPicker
+                Grid.Row="3"
+                Grid.Column="1"
+                Margin="9 0"
+                SelectedColor="{Binding SelectedPowerPlan.Background}"
+                />
+
+            <Button
+                Grid.Row="4" Grid.ColumnSpan="2"
+                Margin="9"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Padding="6 0"
+                Content="Load Defaults"
+                Command="{Binding LoadDefaultsCommand}"
+                />
+
+            <StackPanel 
+                Grid.Row="4" Grid.ColumnSpan="2"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Orientation="Horizontal">
+                <Button
+                    Margin="6"
+                    Padding="6 0"
+                    Content="Revert Changes"
+                    Command="{Binding RevertChangesCommand}"/>
+                <Button
+                    Margin="6"
+                    Padding="6 0"
+                    Content="Apply"
+                    Command="{Binding ApplyCommand}"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

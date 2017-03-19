@@ -1,11 +1,7 @@
-﻿using PC.PowerBuddy.Controls;
-using PC.PowerBuddy.Interop;
-using PC.PowerBuddy.Services;
+﻿using PC.PowerBuddy.Services;
 using PC.PowerBuddy.ViewModels;
 using PC.PowerBuddy.Views;
-using System;
 using System.Windows;
-using System.Windows.Interop;
 
 namespace PC.PowerBuddy
 {
@@ -18,28 +14,20 @@ namespace PC.PowerBuddy
         {
         }
 
-        private void Application_Startup(object sender, StartupEventArgs e)
+        private void Application_Startup(object sender, StartupEventArgs startupEventArgs)
         {
-			var viewModel = new MainViewModel(new PowerPlanService());
+			var notifyIconService = new NotifyIconService();
+			var powerPlanService = new PowerPlanService();
 
-			this.MainWindow = new MainWindow(viewModel);
-			this.MainWindow.Loaded += (s, ea) =>
+			notifyIconService.IconEditorLaunchRequested += (s, e) =>
 			{
-				this.HideFromAltTab(this.MainWindow);
-				viewModel.UpdatePowerPlans();
+				var editor = new IconEditorWindow(new IconEditorViewModel(notifyIconService, powerPlanService));
+				editor.Show();
 			};
+
+			this.MainWindow = new MainWindow(new MainViewModel(powerPlanService, notifyIconService), notifyIconService);
 
 			this.MainWindow.Show();
         }
-
-		private void HideFromAltTab(Window window)
-		{
-			WindowInteropHelper wndHelper = new WindowInteropHelper(window);
-
-			int exStyle = (int)Win32Interop.GetWindowLong(wndHelper.Handle, (int)Win32Interop.GetWindowLongFields.GWL_EXSTYLE);
-
-			exStyle |= (int)Win32Interop.ExtendedWindowStyles.WS_EX_TOOLWINDOW;
-			Win32Interop.SetWindowLong(wndHelper.Handle, (int)Win32Interop.GetWindowLongFields.GWL_EXSTYLE, (IntPtr)exStyle);
-		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using PC.PowerBuddy.Models;
 using PC.PowerBuddy.Services;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -7,17 +8,28 @@ namespace PC.PowerBuddy.ViewModels
 {
 	public class MainViewModel : ViewModelBase
 	{
-		private PowerPlanService powerPlanService;
+		private readonly PowerPlanService powerPlanService;
+		private readonly NotifyIconService notifyIconService;
+
 		private ObservableCollection<PowerPlanViewModel> powerPlans;
 
-		public MainViewModel(PowerPlanService powerPlanService)
+		public MainViewModel()
 		{
-			this.powerPlanService = powerPlanService;
-
 			if (base.IsInDesigner)
 			{
+				this.powerPlanService = new PowerPlanService();
 				this.UpdatePowerPlans();
 			}
+			else
+			{
+				throw new InvalidOperationException("The parameterless constructor should only be used by the WPF designer.");
+			}
+		}
+
+		public MainViewModel(PowerPlanService powerPlanService, NotifyIconService notifyIconService)
+		{
+			this.powerPlanService = powerPlanService;
+			this.notifyIconService = notifyIconService;
 		}
 
 		public ObservableCollection<PowerPlanViewModel> PowerPlans
@@ -34,7 +46,7 @@ namespace PC.PowerBuddy.ViewModels
 
 		internal void UpdatePowerPlans()
 		{
-			this.PowerPlans = new ObservableCollection<PowerPlanViewModel>(this.powerPlanService.GetPowerPlans().Select(item => new PowerPlanViewModel(item)));
+			this.PowerPlans = new ObservableCollection<PowerPlanViewModel>(this.powerPlanService.GetPowerPlans().Select(item => new PowerPlanViewModel(item, this.notifyIconService)));
 		}
 	}
 }

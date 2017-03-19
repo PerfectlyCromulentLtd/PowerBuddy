@@ -1,7 +1,10 @@
-﻿using PC.PowerBuddy.ViewModels;
+﻿using PC.PowerBuddy.Interop;
+using PC.PowerBuddy.Services;
+using PC.PowerBuddy.ViewModels;
 using System;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Interop;
 using SD = System.Drawing;
 using SWF = System.Windows.Forms;
 
@@ -10,36 +13,32 @@ namespace PC.PowerBuddy
 	public partial class MainWindow : Window
 	{
 		private MainViewModel viewModel;
-		private SWF.NotifyIcon trayIcon;
 
-		public MainWindow(MainViewModel viewModel)
+		public MainWindow(MainViewModel viewModel, NotifyIconService notifyIconService)
 		{
 			InitializeComponent();
 
 			this.viewModel = viewModel;
 			this.DataContext = this.viewModel;
 
-			this.SetupTrayIcon();
+			notifyIconService.Clicked += (s, e) => this.ToggleWindow();
+			notifyIconService.CloseRequested += (s, e) => this.Close();
+
+			this.Loaded += (s, e) =>
+			{
+				this.HideFromAltTab();
+				this.viewModel.UpdatePowerPlans();
+			};
 		}
 
-		private void SetupTrayIcon()
+		private void HideFromAltTab()
 		{
-			this.trayIcon = new SWF.NotifyIcon();
-			this.trayIcon.Icon = SD.Icon.ExtractAssociatedIcon(Assembly.GetEntryAssembly().ManifestModule.Name);
-			this.trayIcon.Visible = true;
-			this.trayIcon.MouseDown += (sender, args) =>
-			{
-				if (args.Button == SWF.MouseButtons.Left)
-				{
-					this.ToggleWindow();
-				}
-			};
-			this.trayIcon.ContextMenu = new SWF.ContextMenu(new SWF.MenuItem[] { new SWF.MenuItem("E&xit", (sender, args) => { this.Close(); }) });
+			WindowInteropHelper wndHelper = new WindowInteropHelper(this);
 
-			this.Closing += (sender, args) =>
-			{
-				this.trayIcon.Visible = false;
-			};
+			int exStyle = (int)Win32Interop.GetWindowLong(wndHelper.Handle, (int)Win32Interop.GetWindowLongFields.GWL_EXSTYLE);
+
+			exStyle |= (int)Win32Interop.ExtendedWindowStyles.WS_EX_TOOLWINDOW;
+			Win32Interop.SetWindowLong(wndHelper.Handle, (int)Win32Interop.GetWindowLongFields.GWL_EXSTYLE, (IntPtr)exStyle);
 		}
 
 		private void ToggleWindow()
@@ -161,21 +160,11 @@ namespace PC.PowerBuddy
 			this.AdjustedLeft = candidatePosition.Left;
 		}
 
-		public double HorizontalDpiScale
-		{
-			get
-			{
-				return PresentationSource.FromVisual(this).CompositionTarget.TransformFromDevice.M11;
-			}
-		}
+		private double HorizontalDpiScale
+			=> PresentationSource.FromVisual(this).CompositionTarget.TransformFromDevice.M11;
 
-		public double VerticalDpiScale
-		{
-			get
-			{
-				return PresentationSource.FromVisual(this).CompositionTarget.TransformFromDevice.M22;
-			}
-		}
+		private double VerticalDpiScale
+			=> PresentationSource.FromVisual(this).CompositionTarget.TransformFromDevice.M22;
 
 		private void Window_Deactivated(object sender, EventArgs e)
 		{
@@ -187,23 +176,13 @@ namespace PC.PowerBuddy
 			this.SkipToHidden();
 		}
 
-		public double AdjustedWidth
-		{
-			get
-			{
-				return this.Width - (this.grid.Margin.Left + this.grid.Margin.Right);
-			}
-		}
+		private double AdjustedWidth
+			=> this.Width - (this.grid.Margin.Left + this.grid.Margin.Right);
 
-		public double AdjustedHeight
-		{
-			get
-			{
-				return this.Height - (this.grid.Margin.Top + this.grid.Margin.Bottom);
-			}
-		}
+		private double AdjustedHeight
+			=> this.Height - (this.grid.Margin.Top + this.grid.Margin.Bottom);
 
-		public double AdjustedTop
+		private double AdjustedTop
 		{
 			set
 			{

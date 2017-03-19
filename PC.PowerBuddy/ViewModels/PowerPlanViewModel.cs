@@ -1,15 +1,22 @@
 ﻿using PC.PowerBuddy.Models;
+using PC.PowerBuddy.Services;
 using System;
 
 namespace PC.PowerBuddy.ViewModels
 {
 	public class PowerPlanViewModel : ViewModelBase
 	{
-		private PowerPlan model;
+		private readonly PowerPlan model;
+		private readonly NotifyIconService notifyIconService;
 
-		public PowerPlanViewModel(PowerPlan model)
+		public PowerPlanViewModel(PowerPlan model, NotifyIconService notifyIconService)
 		{
 			this.model = model;
+			this.notifyIconService = notifyIconService;
+			if (this.IsActive)
+			{
+				this.UpdateIcon();
+			}
 		}
 
 		public String Name
@@ -36,14 +43,23 @@ namespace PC.PowerBuddy.ViewModels
 			}
 			set
 			{
-				this.model.IsActive = value;
-				this.OnPropertyChanged();
-
-				if (this.model.IsActive)
+				if (value)
 				{
-					this.model.WmiPowerPlan.InvokeMethod("Activate", null);
+					this.model.Activate();
+					this.UpdateIcon();
 				}
+				else
+				{
+					this.model.Deactivate();
+				}
+
+				this.OnPropertyChanged();
 			}
+		}
+
+		private void UpdateIcon()
+		{
+			this.notifyIconService.UpdateDisplayedIcon(this.model.Id, this.Name);
 		}
 	}
 }

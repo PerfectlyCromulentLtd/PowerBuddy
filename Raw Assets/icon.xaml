@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--This file is NOT compatible with Silverlight-->
+<Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform">
+  <Canvas Name="svg4271" Width="511.99998" Height="511.99998">
+    <Canvas.RenderTransform>
+      <TranslateTransform X="0" Y="0"/>
+    </Canvas.RenderTransform>
+    <Canvas.Resources>
+      <LinearGradientBrush xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Key="linearGradient4309" MappingMode="Absolute" SpreadMethod="Reflect" StartPoint="-1042,802" EndPoint="-279,802">
+        <LinearGradientBrush.GradientStops>
+          <GradientStopCollection>
+            <GradientStop Color="#FFFFFFFF" Offset="0"/>
+            <GradientStop Color="#FF13708E" Offset="1"/>
+          </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+        <LinearGradientBrush.Transform>
+          <TranslateTransform X="544" Y="-406.85715"/>
+        </LinearGradientBrush.Transform>
+      </LinearGradientBrush>
+    </Canvas.Resources>
+    <!--Unknown tag: sodipodi:namedview-->
+    <!--Unknown tag: metadata-->
+    <Canvas Name="layer1">
+      <Canvas.RenderTransform>
+        <TranslateTransform X="-4" Y="-133.50507"/>
+      </Canvas.RenderTransform>
+      <Ellipse xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="4" Canvas.Top="133.5" Width="512" Height="512" Name="circle4305" Fill="{StaticResource linearGradient4309}" StrokeThickness="15.81799984" StrokeMiterLimit="4" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat"/>
+      <Ellipse xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="34" Canvas.Top="163.5" Width="452" Height="452" Name="circle4307" StrokeThickness="20" Stroke="#FFFFFFFF" StrokeMiterLimit="4" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat"/>
+      <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="rect4163" Fill="#FFFFFFFF" StrokeThickness="20" StrokeMiterLimit="4" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat" Opacity="1">
+        <Path.Data>
+          <PathGeometry Figures="m 152 282.50504 c -5.54 0 -10 4.46 -10 10 l 0 19 -6.05859 0 C 122.67763 311.50504 112 322.18267 112 335.44645 l 0 150.11718 c 0 13.26378 10.67763 23.94141 23.94141 23.94141 l 248.11718 0 C 397.32237 509.50504 408 498.82741 408 485.56363 l 0 -150.11718 c 0 -13.26378 -10.67763 -23.94141 -23.94141 -23.94141 l -6.05859 0 0 -19 c 0 -5.54 -4.46 -10 -10 -10 l -23 0 c -5.54 0 -10 4.46 -10 10 l 0 19 -150 0 0 -19 c 0 -5.54 -4.46 -10 -10 -10 l -23 0 z m 21 53 c 3.878 0 7 4.46 7 10 l 0 10 10 0 c 5.54 0 10 3.122 10 7 0 3.878 -4.46 7 -10 7 l -10 0 0 10 c 0 5.54 -3.122 10 -7 10 -3.878 0 -7 -4.46 -7 -10 l 0 -10 -10 0 c -5.54 0 -10 -3.122 -10 -7 0 -3.878 4.46 -7 10 -7 l 10 0 0 -10 c 0 -5.54 3.122 -10 7 -10 z m 153 20 38 0 c 5.54 0 10 3.122 10 7 0 3.878 -4.46 7 -10 7 l -38 0 c -5.54 0 -10 -3.122 -10 -7 0 -3.878 4.46 -7 10 -7 z m -105.72852 65.88672 20 0 39.45704 0 20 0 c 5.54 0 10 4.46 10 10 l 0 20 0 5.42969 0 5 c 0 16.62 -13.38 30 -30 30 l -39.45704 0 c -16.62 0 -30 -13.38 -30 -30 l 0 -5 0 -5.42969 0 -20 c 0 -5.54 4.46 -10 10 -10 z" FillRule="NonZero"/>
+        </Path.Data>
+      </Path>
+    </Canvas>
+  </Canvas>
+</Viewbox>

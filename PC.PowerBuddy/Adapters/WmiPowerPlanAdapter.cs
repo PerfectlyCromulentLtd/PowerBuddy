@@ -21,31 +21,23 @@ namespace PC.PowerBuddy.Adapters
 
 		public PowerPlan ToPowerPlan()
 		{
-			var result = new PowerPlan();
-
-			result.Name = this.wmiPowerPlan.GetPropertyValue("ElementName").ToString();
-			result.Description = this.wmiPowerPlan.GetPropertyValue("Description").ToString();
+			var name = this.wmiPowerPlan.GetPropertyValue("ElementName").ToString();
+			var description = this.wmiPowerPlan.GetPropertyValue("Description").ToString();
 			
-			String instanceId = this.wmiPowerPlan.GetPropertyValue("InstanceID").ToString();
-			result.InstanceId = instanceId;
+			var instanceId = this.wmiPowerPlan.GetPropertyValue("InstanceID").ToString();
 
-			int guidStringLength = 38;
-
-			Guid guid = Guid.Empty;
-
-			if (instanceId.Length >= guidStringLength && Guid.TryParse(instanceId.Substring(instanceId.Length - guidStringLength, guidStringLength), out guid))
+			
+			Guid id = Guid.Empty;
+			const int guidStringLength = 38;
+			if (instanceId.Length >= guidStringLength)
 			{
-				result.Id = guid;
+				Guid.TryParse(instanceId.Substring(instanceId.Length - guidStringLength, guidStringLength), out id);
 			}
 
 			bool isActive;
-			if(Boolean.TryParse(this.wmiPowerPlan.GetPropertyValue("IsActive").ToString(), out isActive))
-			{
-				result.IsActive = isActive;
-			}
+			Boolean.TryParse(this.wmiPowerPlan.GetPropertyValue("IsActive").ToString(), out isActive);
 
-			result.WmiPowerPlan = this.wmiPowerPlan;
-
+			var result = new PowerPlan(name, description, instanceId, id, isActive, this.wmiPowerPlan);
 			return result;
 		}
 	}
