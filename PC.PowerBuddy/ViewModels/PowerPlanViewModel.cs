@@ -13,6 +13,7 @@ namespace PC.PowerBuddy.ViewModels
 		{
 			this.model = model;
 			this.notifyIconService = notifyIconService;
+
 			if (this.IsActive)
 			{
 				this.UpdateIcon();
@@ -59,7 +60,7 @@ namespace PC.PowerBuddy.ViewModels
 
 		private void UpdateIcon()
 		{
-			this.notifyIconService.UpdateDisplayedIcon(this.model.Id, this.Name);
+			this.notifyIconService.SetDisplayedIcon(this.model.Id, $"Current power plan:{Environment.NewLine}{this.Name}");
 		}
 	}
 }

@@ -17,9 +17,12 @@ namespace PC.PowerBuddy.Services
 		private readonly Icon defaultIcon;
 		private readonly NotifyIcon notifyIcon;
 		private IDictionary<Guid, Icon> candidateIcons;
+		private Guid activePowerPlanId;
 
 		public NotifyIconService()
 		{
+			this.activePowerPlanId = Guid.Empty;
+
 			this.defaultIcon = Icon.ExtractAssociatedIcon(Assembly.GetEntryAssembly().ManifestModule.Name);
 
 			this.LoadIcons();
@@ -35,21 +38,28 @@ namespace PC.PowerBuddy.Services
 			this.candidateIcons =
 				new DirectoryInfo(".")
 					.GetFiles("*.ico")
-					.Where(item =>
-					{
-						Guid powerPlanId;
-						return Guid.TryParse(Path.GetFileNameWithoutExtension(item.Name), out powerPlanId);
-					})
 					.Select(item => new
 					{
-						Key = Guid.Parse(Path.GetFileNameWithoutExtension(item.Name)),
-						Value = this.GetIconOrNull(item)
+						Key = ExtractPowerPlanIdFromFilename(item),
+						Value = this.LoadIcon(item)
 					})
-					.Where(item => item.Value != null)
+					.Where(item => item.Value != null && item.Key != Guid.Empty)
 					.ToDictionary(keySelector => keySelector.Key, elementSelector => elementSelector.Value);
 		}
 
-		private Icon GetIconOrNull(FileInfo item)
+		private static Guid ExtractPowerPlanIdFromFilename(FileInfo item)
+		{
+			Guid powerPlanId;
+
+			if (!Guid.TryParse(Path.GetFileNameWithoutExtension(item.Name), out powerPlanId))
+			{
+				powerPlanId = Guid.Empty;
+			}
+
+			return powerPlanId;
+		}
+
+		private Icon LoadIcon(FileInfo item)
 		{
 			Icon result = null;
 			try
@@ -65,7 +75,6 @@ namespace PC.PowerBuddy.Services
 
 		private void BuildNotifyIcon()
 		{
-			this.notifyIcon.Tag = Guid.Empty; //HACK
 			this.notifyIcon.Icon = this.defaultIcon;
 			this.notifyIcon.Visible = true;
 			this.notifyIcon.MouseDown += (sender, args) =>
@@ -84,12 +93,12 @@ namespace PC.PowerBuddy.Services
 						});
 		}
 
-		internal void UpdateDisplayedIcon(Guid powerPlanId, string text)
+		internal void SetDisplayedIcon(Guid powerPlanId, string text)
 		{
 			Icon icon = null;
 			this.candidateIcons.TryGetValue(powerPlanId, out icon);
 
-			this.notifyIcon.Tag = powerPlanId; //HACK
+			this.activePowerPlanId = powerPlanId;
 			this.notifyIcon.Icon = icon ?? this.defaultIcon;
 			this.notifyIcon.Text = text.Substring(0, Math.Min(64, text.Length));
 		}
@@ -98,7 +107,7 @@ namespace PC.PowerBuddy.Services
 		{
 			File.WriteAllBytes($".\\{powerPlanId}.ico", iconData);
 			this.LoadIcons();
-			this.UpdateDisplayedIcon((Guid)this.notifyIcon.Tag, this.notifyIcon.Text); //HACK
+			this.SetDisplayedIcon(this.activePowerPlanId, this.notifyIcon.Text); //HACK
 		}
 
 		public void Dispose()

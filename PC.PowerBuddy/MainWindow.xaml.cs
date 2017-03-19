@@ -2,7 +2,6 @@
 using PC.PowerBuddy.Services;
 using PC.PowerBuddy.ViewModels;
 using System;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Interop;
 using SD = System.Drawing;
@@ -26,19 +25,25 @@ namespace PC.PowerBuddy
 
 			this.Loaded += (s, e) =>
 			{
-				this.HideFromAltTab();
+				var windowHandle = new WindowInteropHelper(this).Handle;
+				Win32Interop.HideWindowFromAltTab(windowHandle);
+				Win32Interop.PowerSchemeChanged += this.OnPowerPlanChanged;
+				Win32Interop.RegisterForPowerSettingNotification(windowHandle);
+
 				this.viewModel.UpdatePowerPlans();
+			};
+
+			this.Closing += (s, e) =>
+			{
+				var windowHandle = new WindowInteropHelper(this).Handle;
+				Win32Interop.PowerSchemeChanged -= this.OnPowerPlanChanged;
+				Win32Interop.UnregisterForPowerSettingNotification(windowHandle);
 			};
 		}
 
-		private void HideFromAltTab()
+		private void OnPowerPlanChanged(object sender, EventArgs e)
 		{
-			WindowInteropHelper wndHelper = new WindowInteropHelper(this);
-
-			int exStyle = (int)Win32Interop.GetWindowLong(wndHelper.Handle, (int)Win32Interop.GetWindowLongFields.GWL_EXSTYLE);
-
-			exStyle |= (int)Win32Interop.ExtendedWindowStyles.WS_EX_TOOLWINDOW;
-			Win32Interop.SetWindowLong(wndHelper.Handle, (int)Win32Interop.GetWindowLongFields.GWL_EXSTYLE, (IntPtr)exStyle);
+			this.viewModel.UpdatePowerPlans();
 		}
 
 		private void ToggleWindow()

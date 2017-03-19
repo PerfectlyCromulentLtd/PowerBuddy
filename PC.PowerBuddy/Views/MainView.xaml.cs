@@ -1,12 +1,4 @@
-﻿using PC.PowerBuddy.Interop;
-using PC.PowerBuddy.ViewModels;
-using System;
-using System.Reflection;
-using System.Windows.Controls;
-using System.Windows.Interop;
-using SD = System.Drawing;
-using SW = System.Windows;
-using SWF = System.Windows.Forms;
+﻿using System.Windows.Controls;
 
 namespace PC.PowerBuddy.Views
 {

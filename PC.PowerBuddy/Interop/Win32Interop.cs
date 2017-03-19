@@ -1,69 +1,83 @@
-﻿using System;
+﻿using PInvoke;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Interop;
 
 namespace PC.PowerBuddy.Interop
 {
 	internal class Win32Interop
 	{
-		[Flags]
-		public enum ExtendedWindowStyles
+		public static event EventHandler PowerSchemeChanged;
+
+		public static void HideWindowFromAltTab(IntPtr windowHandle)
 		{
-			WS_EX_TOOLWINDOW = 0x00000080,
+			int exStyle = User32.GetWindowLong(windowHandle, User32.WindowLongIndexFlags.GWL_EXSTYLE);
+			exStyle |= (int)User32.WindowStylesEx.WS_EX_TOOLWINDOW;
+
+			User32.SetWindowLong(windowHandle, User32.WindowLongIndexFlags.GWL_EXSTYLE, (User32.SetWindowLongFlags)exStyle);
 		}
 
-		public enum GetWindowLongFields
+		public static void RegisterForPowerSettingNotification(IntPtr windowHandle)
 		{
-			GWL_EXSTYLE = (-20),
+			HwndSource source = HwndSource.FromHwnd(windowHandle);
+			source.AddHook(new HwndSourceHook(WndProc));
+
+			var guid = GUID_POWERSCHEME_PERSONALITY;
+			RegisterPowerSettingNotification(windowHandle, ref guid, 0);
 		}
 
-		[DllImport("user32.dll")]
-		public static extern IntPtr GetWindowLong(IntPtr hWnd, int nIndex);
-
-		public static IntPtr SetWindowLong(IntPtr hWnd, int nIndex, IntPtr dwNewLong)
+		public static void UnregisterForPowerSettingNotification(IntPtr windowHandle)
 		{
-			int error = 0;
-			IntPtr result = IntPtr.Zero;
-			// Win32 SetWindowLong doesn't clear error on success
-			SetLastError(0);
+			HwndSource source = HwndSource.FromHwnd(windowHandle);
+			source.AddHook(new HwndSourceHook(WndProc));
+		}
 
-			if (IntPtr.Size == 4)
+		private static IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+		{
+			// We're only interested in WM_POWERBROADCAST (0x0218) messages with wParam of PBT_POWERSETTINGCHANGE (0x8013)
+			if (msg == 0x0218 && (int)wParam == 0x8013)
 			{
-				// use SetWindowLong
-				Int32 tempResult = IntSetWindowLong(hWnd, nIndex, IntPtrToInt32(dwNewLong));
-				error = Marshal.GetLastWin32Error();
-				result = new IntPtr(tempResult);
-			}
-			else
-			{
-				// use SetWindowLongPtr
-				result = IntSetWindowLongPtr(hWnd, nIndex, dwNewLong);
-				error = Marshal.GetLastWin32Error();
+				POWERBROADCAST_SETTING settingMessage =
+					(POWERBROADCAST_SETTING)Marshal.PtrToStructure(
+						lParam,
+						typeof(POWERBROADCAST_SETTING));
+
+				// We're only interested if the PowerSetting changed is GUID_POWERSCHEME_PERSONALITY
+				if (settingMessage.PowerSetting == GUID_POWERSCHEME_PERSONALITY && settingMessage.DataLength == Marshal.SizeOf(typeof(Guid)))
+				{
+					try
+					{
+						Win32Interop.PowerSchemeChanged?.Invoke(null, EventArgs.Empty);
+					}
+					catch
+					{
+						// TODO: log?  Or is that too expensive here?
+					}
+				}
 			}
 
-			if ((result == IntPtr.Zero) && (error != 0))
-			{
-				throw new System.ComponentModel.Win32Exception(error);
-			}
-
-			return result;
+			handled = false;
+			return IntPtr.Zero;
 		}
 
-		[DllImport("user32.dll", EntryPoint = "SetWindowLongPtr", SetLastError = true)]
-		private static extern IntPtr IntSetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
+		[DllImport("User32", SetLastError = true, EntryPoint = "RegisterPowerSettingNotification", CallingConvention = CallingConvention.StdCall)]
+		private static extern IntPtr RegisterPowerSettingNotification(IntPtr hRecipient, ref Guid PowerSettingGuid, Int32 Flags);
 
-		[DllImport("user32.dll", EntryPoint = "SetWindowLong", SetLastError = true)]
-		private static extern Int32 IntSetWindowLong(IntPtr hWnd, int nIndex, Int32 dwNewLong);
+		[DllImport("User32", EntryPoint = "UnregisterPowerSettingNotification", CallingConvention = CallingConvention.StdCall)]
+		private static extern bool UnregisterPowerSettingNotification(IntPtr handle);
 
-		private static int IntPtrToInt32(IntPtr intPtr)
+		private static readonly Guid GUID_POWERSCHEME_PERSONALITY = new Guid("245d8541-3943-4422-b025-13A784F679B7");
+
+		[StructLayout(LayoutKind.Sequential, Pack = 4)]
+		internal struct POWERBROADCAST_SETTING
 		{
-			return unchecked((int)intPtr.ToInt64());
+			public Guid PowerSetting;
+			public uint DataLength;
+			public byte Data;
 		}
-
-		[DllImport("kernel32.dll", EntryPoint = "SetLastError")]
-		public static extern void SetLastError(int dwErrorCode);
 	}
 }
