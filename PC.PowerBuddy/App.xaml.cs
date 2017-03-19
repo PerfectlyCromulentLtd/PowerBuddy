@@ -22,13 +22,14 @@ namespace PC.PowerBuddy
 			this.MainWindow = new MainWindow(new MainViewModel(powerPlanService, notifyIconService), notifyIconService);
 			this.MainWindow.Show();
 
-			var editor = new IconEditorWindow(new IconEditorViewModel(notifyIconService, powerPlanService));
-			editor.Owner = this.MainWindow;
+			IconEditorWindow editor = null;
 
 			notifyIconService.IconEditorLaunchRequested += (s, e) =>
 			{
-				if (!editor.IsVisible)
+				if (editor == null || !editor.IsVisible)
 				{
+					editor = new IconEditorWindow(new IconEditorViewModel(notifyIconService, powerPlanService));
+					editor.Owner = this.MainWindow;
 					editor.Show();
 				}
 				else
