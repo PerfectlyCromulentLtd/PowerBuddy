@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media;
+using System.ComponentModel;
 
 namespace PC.PowerBuddy.Views
 {
@@ -27,6 +28,14 @@ namespace PC.PowerBuddy.Views
 					{ 24, this.icon24 },
 					{ 16, this.icon16 }
 				});
+		}
+
+		protected override void OnClosing(CancelEventArgs e)
+		{
+			base.OnClosing(e);
+
+			this.Hide();
+			e.Cancel = true;
 		}
 
 		public IconEditorWindow(IconEditorViewModel iconEditorViewModel) : this()
