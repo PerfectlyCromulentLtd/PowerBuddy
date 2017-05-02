@@ -21,7 +21,7 @@ VIProductVersion ${ProductVersion}
 VIAddVersionKey ProductVersion ${ProductVersion}
 VIAddVersionKey FileVersion ${ProductVersion}
 VIAddVersionKey FileDescription "Installer for ${ProductName}"
-VIAddVersionKey LegalCopyright ""
+VIAddVersionKey LegalCopyright "Copyright ${CompanyName} 2017"
 VIAddVersionKey CompanyName "${CompanyName}"
 
 ; The file to write
@@ -91,11 +91,11 @@ Section "Desktop Shortcuts"
 
 SectionEnd
 
-Section "Start Automatically at Windows Startup"
+;Section "Start Automatically at Windows Startup"
 
-	CreateShortCut "$SMSTARTUP\${ProductName}.lnk" "$INSTDIR\${BinaryFileName}" "" "" 0
+;	CreateShortCut "$SMSTARTUP\${ProductName}.lnk" "$INSTDIR\${BinaryFileName}" "" "" 0
 
-SectionEnd
+;SectionEnd
 
 ;--------------------------------
 
