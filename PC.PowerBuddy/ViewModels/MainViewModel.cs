@@ -8,7 +8,7 @@ namespace PC.PowerBuddy.ViewModels
 {
 	public class MainViewModel : ViewModelBase
 	{
-		private readonly PowerPlanService powerPlanService;
+		private readonly IPowerPlanService powerPlanService;
 		private readonly NotifyIconService notifyIconService;
 
 		private ObservableCollection<PowerPlanViewModel> powerPlans;
@@ -26,7 +26,7 @@ namespace PC.PowerBuddy.ViewModels
 			}
 		}
 
-		public MainViewModel(PowerPlanService powerPlanService, NotifyIconService notifyIconService)
+		public MainViewModel(IPowerPlanService powerPlanService, NotifyIconService notifyIconService)
 		{
 			this.powerPlanService = powerPlanService;
 			this.notifyIconService = notifyIconService;

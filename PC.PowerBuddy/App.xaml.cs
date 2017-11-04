@@ -17,6 +17,7 @@ namespace PC.PowerBuddy
         private void Application_Startup(object sender, StartupEventArgs startupEventArgs)
         {
 			var notifyIconService = new NotifyIconService();
+			//var powerPlanService = new WmiPowerPlanService();
 			var powerPlanService = new PowerPlanService();
 
 			this.MainWindow = new MainWindow(new MainViewModel(powerPlanService, notifyIconService), notifyIconService);

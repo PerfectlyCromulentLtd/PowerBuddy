@@ -17,7 +17,7 @@ namespace PC.PowerBuddy.ViewModels
 		private PowerPlanIconViewModel selectedPowerPlan;
 		private IEnumerable<PowerPlanIconViewModel> previousState;
 
-		public IconEditorViewModel(NotifyIconService notifyIconService, PowerPlanService powerPlanService)
+		public IconEditorViewModel(NotifyIconService notifyIconService, IPowerPlanService powerPlanService)
 		{
 			this.notifyIconService = notifyIconService;
 
@@ -30,7 +30,7 @@ namespace PC.PowerBuddy.ViewModels
 			this.RevertChanges();
 		}
 
-		private void CreatePowerPlanViewModels(PowerPlanService powerPlanService)
+		private void CreatePowerPlanViewModels(IPowerPlanService powerPlanService)
 		{
 			var powerPlans = powerPlanService.GetPowerPlans();
 
@@ -97,11 +97,7 @@ namespace PC.PowerBuddy.ViewModels
 					icon.Images.Add(new PngIconImage(bitmapSource));
 				}
 
-				var newState = this.previousState.ToList();
-				newState.RemoveAll(item => item.Id == powerPlan.Id);
-				newState.Add(powerPlan);
-
-				this.SaveState(newState);
+				this.SaveState(this.PowerPlans);
 				this.LoadPreviousState();
 
 				using (var stream = new MemoryStream())

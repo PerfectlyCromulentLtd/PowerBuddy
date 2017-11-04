@@ -6,10 +6,10 @@ namespace PC.PowerBuddy.ViewModels
 {
 	public class PowerPlanViewModel : ViewModelBase
 	{
-		private readonly PowerPlan model;
+		private readonly IPowerPlan model;
 		private readonly NotifyIconService notifyIconService;
 
-		public PowerPlanViewModel(PowerPlan model, NotifyIconService notifyIconService)
+		public PowerPlanViewModel(IPowerPlan model, NotifyIconService notifyIconService)
 		{
 			this.model = model;
 			this.notifyIconService = notifyIconService;
@@ -48,10 +48,6 @@ namespace PC.PowerBuddy.ViewModels
 				{
 					this.model.Activate();
 					this.UpdateIcon();
-				}
-				else
-				{
-					this.model.Deactivate();
 				}
 
 				this.OnPropertyChanged();

@@ -19,7 +19,7 @@ namespace PC.PowerBuddy.Adapters
 			this.wmiPowerPlan = wmiPowerPlan;
 		}
 
-		public PowerPlan ToPowerPlan()
+		public WmiPowerPlan ToPowerPlan()
 		{
 			var name = this.wmiPowerPlan.GetPropertyValue("ElementName").ToString();
 			var description = this.wmiPowerPlan.GetPropertyValue("Description").ToString();
@@ -37,7 +37,7 @@ namespace PC.PowerBuddy.Adapters
 			bool isActive;
 			Boolean.TryParse(this.wmiPowerPlan.GetPropertyValue("IsActive").ToString(), out isActive);
 
-			var result = new PowerPlan(name, description, instanceId, id, isActive, this.wmiPowerPlan);
+			var result = new WmiPowerPlan(name, description, instanceId, id, isActive, this.wmiPowerPlan);
 			return result;
 		}
 	}

@@ -1,36 +1,17 @@
-﻿using System;
-using System.Management;
+﻿using PowerManagerAPI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace PC.PowerBuddy.Models
 {
-	public sealed class PowerPlan : IDisposable
+	class PowerPlan : IPowerPlan, IDisposable
 	{
-		private readonly ManagementObject wmiPowerPlan;
-
-		public PowerPlan(string name, string description, string instanceId, Guid id, bool isActive, ManagementObject wmiPowerPlan)
+		public PowerPlan(Guid id)
 		{
-			this.Name = name;
-			this.Description = description;
-			this.InstanceId = instanceId;
 			this.Id = id;
-			this.IsActive = isActive;
-			this.wmiPowerPlan = wmiPowerPlan;
-		}
-
-		internal void Activate()
-		{
-			this.wmiPowerPlan.InvokeMethod("Activate", null);
-			this.IsActive = true;
-		}
-
-		internal void Deactivate()
-		{
-			this.IsActive = false;
-		}
-
-		public void Dispose()
-		{
-			this.wmiPowerPlan.Dispose();
 		}
 
 		public Guid Id
@@ -38,25 +19,38 @@ namespace PC.PowerBuddy.Models
 			get;
 		}
 
-		public String Name
+		public string Name =>
+			PowerManager.GetPlanName(this.Id);
+
+		public string Description =>
+			PowerManager.GetPlanDescription(this.Id);
+
+		public bool IsActive =>
+			PowerManager.GetActivePlan() == this.Id;
+
+		public void Activate() =>
+			PowerManager.SetActivePlan(this.Id);
+
+		#region IDisposable Support
+		private bool isDisposed = false; // To detect redundant calls
+
+		protected virtual void Dispose(bool disposing)
 		{
-			get;
+			if (!isDisposed)
+			{
+				if (disposing)
+				{
+					//nothing
+				}
+
+				isDisposed = true;
+			}
 		}
 
-		public String Description
+		public void Dispose()
 		{
-			get;
+			Dispose(true);
 		}
-
-		public string InstanceId
-		{
-			get;
-		}
-
-		public bool IsActive
-		{
-			get;
-			private set;
-		}
+		#endregion
 	}
 }
